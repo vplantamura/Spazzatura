@@ -136,7 +136,7 @@ public class ControllerClass {
 				if (content.equals("image/jpeg") || content.equals("image/png")) {
 					byte[] bytes = file.getBytes();
 					// Create the file on server
-					File serverFile = new File(environment.getRequiredProperty("imagePath").getName() + File.separator + "psImg_" + id + ".jpeg");
+					File serverFile = new File(environment.getRequiredProperty("imagePath").getName() + File.separator + "psImg_".toString() + id + ".jpeg".toString());
 					BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile.getName()));
 					stream.write(bytes);
 					stream.close();
@@ -223,7 +223,8 @@ public class ControllerClass {
 	}		
 
 	@ResponseBody
-	@RequestMapping(value="/home", method=RequestMethod.GET)
+	String var="home";	//FIX
+	@RequestMapping(value=var, method=RequestMethod.GET)
 	public ModelAndView homePage() {
 		modelAndView.setViewName("index");
 		return modelAndView;
@@ -259,17 +260,16 @@ public class ControllerClass {
 			Cookie c = new Cookie("name", "");
 			c.setMaxAge(0);
 
-			System.gc();
 			System.out.println("logout");					
 		} catch (NullPointerException e) { 
 			Cookie c = new Cookie("name", "");
 			c.setMaxAge(0);
-			System.gc();
+			
 			System.out.println("logout");		
 		} catch (Exception e) {
 			Cookie c = new Cookie("name", "");
 			c.setMaxAge(0);
-			System.gc();
+			
 			System.out.println("logout");		
 		}
         return "redirect:/";
@@ -294,5 +294,6 @@ public class ControllerClass {
 	public void destroy() throws Exception {
 		System.out.println("\n**   Spring F/M Destroying(Closed) invoking by destroy method..   **\n");
 	}
+	//PROVA PROVA VERA
 
 }
