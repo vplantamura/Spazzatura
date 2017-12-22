@@ -592,8 +592,8 @@ child.__super__ = parent.prototype; return child;
 
     return AbstractChosen;
 
-  })();
-  
+  })();).call(this);
+  (
   function() {
   this.Chosen = (function(_super) {
     __extends(Chosen, _super);
