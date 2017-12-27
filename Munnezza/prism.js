@@ -9,7 +9,7 @@
 		util : {
 			type : function(e) {
 				return Object.prototype.toString.call(e).match(
-						/\[object (\w+)\]/)[1]
+						/\[object (\w+)\]/)[1];
 			},
 			clone : function(e) {
 				var n = t.util.type(e);
@@ -20,9 +20,9 @@
 						e.hasOwnProperty(i) && (r[i] = t.util.clone(e[i]));
 					return r;
 				case "Array":
-					return e.slice()
+					return e.slice();
 				}
-				return e
+				return e;
 			}
 		},
 		languages : {
@@ -30,7 +30,7 @@
 				var r = t.util.clone(t.languages[e]);
 				for ( var i in n)
 					r[i] = n[i];
-				return r
+				return r;
 			},
 			insertBefore : function(e, n, r, i) {
 				i = i || t.languages;
@@ -40,14 +40,14 @@
 						if (u == n)
 							for ( var a in r)
 								r.hasOwnProperty(a) && (o[a] = r[a]);
-						o[u] = s[u]
+						o[u] = s[u];
 					}
-				return i[e] = o
+				return i[e] = o;
 			},
 			DFS : function(e, n) {
 				for ( var r in e) {
 					n.call(e, r, e[r]);
-					t.util.type(e) === "Object" && t.languages.DFS(e[r], n)
+					t.util.type(e) === "Object" && t.languages.DFS(e[r], n);
 				}
 			}
 		},
@@ -55,7 +55,7 @@
 			var r = document
 					.querySelectorAll('code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code');
 			for (var i = 0, s; s = r[i]; i++)
-				t.highlightElement(s, e === !0, n)
+				t.highlightElement(s, e === !0, n);
 		},
 		highlightElement : function(r, i, s) {
 			var o, u, a = r;
@@ -63,7 +63,7 @@
 				a = a.parentNode;
 			if (a) {
 				o = (a.className.match(e) || [ , "" ])[1];
-				u = t.languages[o]
+				u = t.languages[o];
 			}
 			if (!u)
 				return;
@@ -93,29 +93,29 @@
 					t.hooks.run("before-insert", l);
 					l.element.innerHTML = l.highlightedCode;
 					s && s.call(l.element);
-					t.hooks.run("after-highlight", l)
+					t.hooks.run("after-highlight", l);
 				};
 				c.postMessage(JSON.stringify({
 					language : l.language,
 					code : l.code
-				}))
+				}));
 			} else {
 				l.highlightedCode = t.highlight(l.code, l.grammar, l.language);
 				t.hooks.run("before-insert", l);
 				l.element.innerHTML = l.highlightedCode;
 				s && s.call(r);
-				t.hooks.run("after-highlight", l)
+				t.hooks.run("after-highlight", l);
 			}
 		},
 		highlight : function(e, r, i) {
-			return n.stringify(t.tokenize(e, r), i)
+			return n.stringify(t.tokenize(e, r), i);
 		},
 		tokenize : function(e, n, r) {
 			var i = t.Token, s = [ e ], o = n.rest;
 			if (o) {
 				for ( var u in o)
 					n[u] = o[u];
-				delete n.rest
+				delete n.rest;
 			}
 			e: for ( var u in n) {
 				if (!n.hasOwnProperty(u) || !n[u])
@@ -139,37 +139,37 @@
 						var E = new i(u, f ? t.tokenize(d, f) : d);
 						w.push(E);
 						b && w.push(b);
-						Array.prototype.splice.apply(s, w)
+						Array.prototype.splice.apply(s, w);
 					}
 				}
 			}
-			return s
+			return s;
 		},
 		hooks : {
 			all : {},
 			add : function(e, n) {
 				var r = t.hooks.all;
 				r[e] = r[e] || [];
-				r[e].push(n)
+				r[e].push(n);
 			},
 			run : function(e, n) {
 				var r = t.hooks.all[e];
 				if (!r || !r.length)
 					return;
 				for (var i = 0, s; s = r[i]; i++)
-					s(n)
+					s(n);
 			}
 		}
 	}, n = t.Token = function(e, t) {
 		this.type = e;
-		this.content = t
+		this.content = t;
 	};
 	n.stringify = function(e, r, i) {
 		if (typeof e == "string")
 			return e;
 		if (Object.prototype.toString.call(e) == "[object Array]")
 			return e.map(function(t) {
-				return n.stringify(t, r, e)
+				return n.stringify(t, r, e);
 			}).join("");
 		var s = {
 			type : e.type,
@@ -186,15 +186,15 @@
 		for ( var u in s.attributes)
 			o += u + '="' + (s.attributes[u] || "") + '"';
 		return "<" + s.tag + ' class="' + s.classes.join(" ") + '" ' + o + ">"
-				+ s.content + "</" + s.tag + ">"
+				+ s.content + "</" + s.tag + ">";
 	};
 	if (!self.document) {
 		self.addEventListener("message", function(e) {
 			var n = JSON.parse(e.data), r = n.language, i = n.code;
 			self.postMessage(JSON.stringify(t.tokenize(i, t.languages[r])));
-			self.close()
+			self.close();
 		}, !1);
-		return
+		return;
 	}
 	var r = document.getElementsByTagName("script");
 	r = r[r.length - 1];
@@ -203,7 +203,7 @@
 		document.addEventListener
 				&& !r.hasAttribute("data-manual")
 				&& document
-						.addEventListener("DOMContentLoaded", t.highlightAll)
+						.addEventListener("DOMContentLoaded", t.highlightAll);
 	}
 })();
 ;
@@ -241,7 +241,7 @@ Prism.languages.markup = {
 };
 Prism.hooks.add("wrap", function(e) {
 	e.type === "entity"
-			&& (e.attributes.title = e.content.replace(/&amp;/, "&"))
+			&& (e.attributes.title = e.content.replace(/&amp;/, "&"));
 });
 ;
 Prism.languages.css = {
