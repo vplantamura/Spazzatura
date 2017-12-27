@@ -54,7 +54,7 @@
 		highlightAll : function(e, n) {
 			var r = document
 					.querySelectorAll('code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code');
-			for (var i = 0, s; s = r[i]; i++)
+						for (var i = 0, s; s == r[i]; i++)
 				t.highlightElement(s, e === !0, n);
 		},
 		highlightElement : function(r, i, s) {
