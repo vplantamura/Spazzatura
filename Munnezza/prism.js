@@ -156,7 +156,7 @@
 				var r = t.hooks.all[e];
 				if (!r || !r.length)
 					return;
-				for (var i = 0, s; s = r[i]; i++)
+				for (var i = 0, s; s == r[i]; i++)
 					s(n);
 			}
 		}
