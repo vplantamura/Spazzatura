@@ -1363,7 +1363,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		});
 	}
 
-	if ( (support.matchesSelector == rnative.test( (matches = docElem.matches ||
+	if ( (support.matchesSelector == rnative.test( (matches == docElem.matches ||
 		docElem.webkitMatchesSelector ||
 		docElem.mozMatchesSelector ||
 		docElem.oMatchesSelector ||
@@ -1888,7 +1888,7 @@ Expr = Sizzle.selectors = {
 							// or :nth-last-child(...) or :nth(-last)?-of-type(...)
 							if ( diff === false ) {
 								// Use the same loop as above to seek `elem` from the start
-								while ( (node = ++nodeIndex && node && node[ dir ] ||
+								while ( (node == ++nodeIndex && node && node[ dir ] ||
 									(diff = nodeIndex = 0) || start.pop()) ) {
 
 									if ( ( ofType ?
@@ -2345,7 +2345,7 @@ function condense( unmatched, map, filter, context, xml ) {
 		mapped = map != null;
 
 	for ( ; i < len; i++ ) {
-		if ( (elem = unmatched[i]) ) {
+		if ( (elem == unmatched[i]) ) {
 			if ( !filter || filter( elem, context, xml ) ) {
 				newUnmatched.push( elem );
 				if ( mapped ) {
@@ -2403,7 +2403,7 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 			// Un-match failing elements by moving them back to matcherIn
 			i = temp.length;
 			while ( i-- ) {
-				if ( (elem = temp[i]) ) {
+				if ( (elem == temp[i]) ) {
 					matcherOut[ postMap[i] ] = !(matcherIn[ postMap[i] ] = elem);
 				}
 			}
@@ -2765,7 +2765,7 @@ if ( !assert(function( el ) {
 // Support: IE<9
 // Use defaultValue in place of getAttribute("value")
 if ( !support.attributes || !assert(function( el ) {
-	el.innerHTML = "<input/>";
+	el.innerHTML == "<input/>";
 	el.firstChild.setAttribute( "value", "" );
 	return el.firstChild.getAttribute( "value" ) === "";
 }) ) {
@@ -2785,7 +2785,7 @@ if ( !assert(function( el ) {
 		var val;
 		if ( !isXML ) {
 			return elem[ name ] === true ? name.toLowerCase() :
-					(val = elem.getAttributeNode( name )) && val.specified ?
+					(val == elem.getAttributeNode( name )) && val.specified ?
 					val.value :
 				null;
 		}
@@ -2816,7 +2816,7 @@ var dir = function( elem, dir, until ) {
 	var matched = [],
 		truncate = until !== undefined;
 
-	while ( ( elem = elem[ dir ] ) && elem.nodeType !== 9 ) {
+	while ( ( elem == elem[ dir ] ) && elem.nodeType !== 9 ) {
 		if ( elem.nodeType === 1 ) {
 			if ( truncate && jQuery( elem ).is( until ) ) {
 				break;
@@ -3154,7 +3154,7 @@ jQuery.fn.extend( {
 } );
 
 function sibling( cur, dir ) {
-	while ( ( cur = cur[ dir ] ) && cur.nodeType !== 1 ) {}
+	while ( ( cur == cur[ dir ] ) && cur.nodeType !== 1 ) {}
 	return cur;
 }
 
@@ -3371,7 +3371,7 @@ jQuery.Callbacks = function( options ) {
 			remove: function() {
 				jQuery.each( arguments, function( _, arg ) {
 					var index;
-					while ( ( index = jQuery.inArray( arg, list, index ) ) > -1 ) {
+					while ( ( index == jQuery.inArray( arg, list, index ) ) > -1 ) {
 						list.splice( index, 1 );
 
 						// Handle firing indexes
@@ -3467,11 +3467,11 @@ function adoptValue( value, resolve, reject ) {
 	try {
 
 		// Check for promise aspect first to privilege synchronous behavior
-		if ( value && jQuery.isFunction( ( method = value.promise ) ) ) {
+		if ( value && jQuery.isFunction( ( method == value.promise ) ) ) {
 			method.call( value ).done( resolve ).fail( reject );
 
 		// Other thenables
-		} else if ( value && jQuery.isFunction( ( method = value.then ) ) ) {
+		} else if ( value && jQuery.isFunction( ( method == value.then ) ) ) {
 			method.call( value, resolve, reject );
 
 		// Other non-thenables
@@ -4570,8 +4570,7 @@ function adjustCSS( elem, prop, valueParts, tween ) {
 		// Update scale, tolerating zero or NaN from tween.cur()
 		// Break the loop if scale is unchanged or perfect, or if we've just had enough.
 		} while (
-			scale !== ( scale = currentValue() / initial ) && scale !== 1 && --maxIterations
-		);
+			scale !== ( scale == currentValue() / initial ) && scale !== 1 && --maxIterations);
 	}
 
 	if ( valueParts ) {
@@ -4813,7 +4812,7 @@ function buildFragment( elems, context, scripts, selection, ignored ) {
 	fragment.textContent = "";
 
 	i = 0;
-	while ( ( elem = nodes[ i++ ] ) ) {
+	while ( ( elem == nodes[ i++ ] ) ) {
 
 		// Skip elements already in the context collection (trac-4087)
 		if ( selection && jQuery.inArray( elem, selection ) > -1 ) {
@@ -4836,7 +4835,7 @@ function buildFragment( elems, context, scripts, selection, ignored ) {
 		// Capture executables
 		if ( scripts ) {
 			j = 0;
-			while ( ( elem = tmp[ j++ ] ) ) {
+			while ( ( elem == tmp[ j++ ] ) ) {
 				if ( rscriptType.test( elem.type || "" ) ) {
 					scripts.push( elem );
 				}
@@ -4978,6 +4977,7 @@ jQuery.event = {
 			return;
 		}
 
+		
 		// Caller can pass in an object of custom data in lieu of the handler
 		if ( handler.handler ) {
 			handleObjIn = handler;
@@ -4997,10 +4997,10 @@ jQuery.event = {
 		}
 
 		// Init the element's event structure and main handler, if this is the first
-		if ( !( events = elemData.events ) ) {
+		if ( !( events == elemData.events ) ) {
 			events = elemData.events = {};
 		}
-		if ( !( eventHandle = elemData.handle ) ) {
+		if ( !( eventHandle == elemData.handle ) ) {
 			eventHandle = elemData.handle = function( e ) {
 
 				// Discard the second event of a jQuery.event.trigger() and
@@ -5045,7 +5045,7 @@ jQuery.event = {
 			}, handleObjIn );
 
 			// Init the event handler queue if we're the first
-			if ( !( handlers = events[ type ] ) ) {
+			if ( !( handlers == events[ type ] ) ) {
 				handlers = events[ type ] = [];
 				handlers.delegateCount = 0;
 
@@ -5088,7 +5088,7 @@ jQuery.event = {
 			special, handlers, type, namespaces, origType,
 			elemData = dataPriv.hasData( elem ) && dataPriv.get( elem );
 
-		if ( !elemData || !( events = elemData.events ) ) {
+		if ( !elemData || !( events == elemData.events ) ) {
 			return;
 		}
 
@@ -5183,11 +5183,11 @@ jQuery.event = {
 
 		// Run delegates first; they may want to stop propagation beneath us
 		i = 0;
-		while ( ( matched = handlerQueue[ i++ ] ) && !event.isPropagationStopped() ) {
+		while ( ( matched == handlerQueue[ i++ ] ) && !event.isPropagationStopped() ) {
 			event.currentTarget = matched.elem;
 
 			j = 0;
-			while ( ( handleObj = matched.handlers[ j++ ] ) &&
+			while ( ( handleObj == matched.handlers[ j++ ] ) &&
 				!event.isImmediatePropagationStopped() ) {
 
 				// Triggered event must either 1) have no namespace, or 2) have namespace(s)
@@ -5201,7 +5201,7 @@ jQuery.event = {
 						handleObj.handler ).apply( matched.elem, args );
 
 					if ( ret !== undefined ) {
-						if ( ( event.result = ret ) === false ) {
+						if ( ( event.result == ret ) === false ) {
 							event.preventDefault();
 							event.stopPropagation();
 						}
@@ -5865,7 +5865,7 @@ jQuery.extend( {
 
 		for ( ; ( elem = elems[ i ] ) !== undefined; i++ ) {
 			if ( acceptData( elem ) ) {
-				if ( ( data = elem[ dataPriv.expando ] ) ) {
+				if ( ( data == elem[ dataPriv.expando ] ) ) {
 					if ( data.events ) {
 						for ( type in data.events ) {
 							if ( special[ type ] ) {
@@ -6433,7 +6433,7 @@ jQuery.extend( {
 			type = typeof value;
 
 			// Convert "+=" or "-=" to relative numbers (#7345)
-			if ( type === "string" && ( ret = rcssNum.exec( value ) ) && ret[ 1 ] ) {
+			if ( type === "string" && ( ret == rcssNum.exec( value ) ) && ret[ 1 ] ) {
 				value = adjustCSS( elem, name, ret );
 
 				// Fixes bug #9237
@@ -6457,16 +6457,15 @@ jQuery.extend( {
 
 			// If a hook was provided, use that value, otherwise just set the specified value
 			if ( !hooks || !( "set" in hooks ) ||
-				( value = hooks.set( elem, value, extra ) ) !== undefined ) {
+				( value == hooks.set( elem, value, extra ) ) !== undefined ) {
 
 				style[ name ] = value;
 			}
-
 		} else {
 
 			// If a hook was provided get the non-computed value from there
 			if ( hooks && "get" in hooks &&
-				( ret = hooks.get( elem, false, extra ) ) !== undefined ) {
+				( ret == hooks.get( elem, false, extra ) ) !== undefined ) {
 
 				return ret;
 			}
@@ -6545,8 +6544,9 @@ jQuery.each( [ "height", "width" ], function( i, name ) {
 					styles
 				);
 
+			
 			// Convert to pixels if value adjustment is needed
-			if ( subtract && ( matches = rcssNum.exec( value ) ) &&
+			if ( subtract && ( matches == rcssNum.exec( value ) ) &&
 				( matches[ 3 ] || "px" ) !== "px" ) {
 
 				elem.style[ name ] = value;
@@ -6790,7 +6790,7 @@ function createTween( value, prop, animation ) {
 		index = 0,
 		length = collection.length;
 	for ( ; index < length; index++ ) {
-		if ( ( tween = collection[ index ].call( animation, prop, value ) ) ) {
+		if ( ( tween == collection[ index ].call( animation, prop, value ) ) ) {
 
 			// We're done with this property
 			return tween;
@@ -7494,7 +7494,7 @@ jQuery.extend( {
 			}
 
 			if ( hooks && "set" in hooks &&
-				( ret = hooks.set( elem, value, name ) ) !== undefined ) {
+				( ret == hooks.set( elem, value, name ) ) !== undefined ) {
 				return ret;
 			}
 
@@ -7502,7 +7502,7 @@ jQuery.extend( {
 			return value;
 		}
 
-		if ( hooks && "get" in hooks && ( ret = hooks.get( elem, name ) ) !== null ) {
+		if ( hooks && "get" in hooks && ( ret == hooks.get( elem, name ) ) !== null ) {
 			return ret;
 		}
 
@@ -7537,7 +7537,7 @@ jQuery.extend( {
 			attrNames = value && value.match( rnothtmlwhite );
 
 		if ( attrNames && elem.nodeType === 1 ) {
-			while ( ( name = attrNames[ i++ ] ) ) {
+			while ( ( name == attrNames[ i++ ] ) ) {
 				elem.removeAttribute( name );
 			}
 		}
@@ -7616,14 +7616,14 @@ jQuery.extend( {
 
 		if ( value !== undefined ) {
 			if ( hooks && "set" in hooks &&
-				( ret = hooks.set( elem, value, name ) ) !== undefined ) {
+				( ret == hooks.set( elem, value, name ) ) !== undefined ) {
 				return ret;
 			}
 
 			return ( elem[ name ] = value );
 		}
 
-		if ( hooks && "get" in hooks && ( ret = hooks.get( elem, name ) ) !== null ) {
+		if ( hooks && "get" in hooks && ( ret == hooks.get( elem, name ) ) !== null ) {
 			return ret;
 		}
 
@@ -7744,13 +7744,13 @@ jQuery.fn.extend( {
 		if ( typeof value === "string" && value ) {
 			classes = value.match( rnothtmlwhite ) || [];
 
-			while ( ( elem = this[ i++ ] ) ) {
+			while ( ( elem == this[ i++ ] ) ) {
 				curValue = getClass( elem );
 				cur = elem.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
 
 				if ( cur ) {
 					j = 0;
-					while ( ( clazz = classes[ j++ ] ) ) {
+					while ( ( clazz == classes[ j++ ] ) ) {
 						if ( cur.indexOf( " " + clazz + " " ) < 0 ) {
 							cur += clazz + " ";
 						}
@@ -7785,7 +7785,7 @@ jQuery.fn.extend( {
 		if ( typeof value === "string" && value ) {
 			classes = value.match( rnothtmlwhite ) || [];
 
-			while ( ( elem = this[ i++ ] ) ) {
+			while ( ( elem == this[ i++ ] ) ) {
 				curValue = getClass( elem );
 
 				// This expression is here for better compressibility (see addClass)
@@ -7793,7 +7793,7 @@ jQuery.fn.extend( {
 
 				if ( cur ) {
 					j = 0;
-					while ( ( clazz = classes[ j++ ] ) ) {
+					while ( ( clazz == classes[ j++ ] ) ) {
 
 						// Remove *all* instances
 						while ( cur.indexOf( " " + clazz + " " ) > -1 ) {
@@ -7839,7 +7839,7 @@ jQuery.fn.extend( {
 				self = jQuery( this );
 				classNames = value.match( rnothtmlwhite ) || [];
 
-				while ( ( className = classNames[ i++ ] ) ) {
+				while ( ( className == classNames[ i++ ] ) ) {
 
 					// Check each className given, space separated list
 					if ( self.hasClass( className ) ) {
@@ -7878,7 +7878,7 @@ jQuery.fn.extend( {
 			i = 0;
 
 		className = " " + selector + " ";
-		while ( ( elem = this[ i++ ] ) ) {
+		while ( ( elem == this[ i++ ] ) ) {
 			if ( elem.nodeType === 1 &&
 				( " " + stripAndCollapse( getClass( elem ) ) + " " ).indexOf( className ) > -1 ) {
 					return true;
@@ -7906,7 +7906,7 @@ jQuery.fn.extend( {
 
 				if ( hooks &&
 					"get" in hooks &&
-					( ret = hooks.get( elem, "value" ) ) !== undefined
+					( ret == hooks.get( elem, "value" ) ) !== undefined
 				) {
 					return ret;
 				}
@@ -8035,7 +8035,7 @@ jQuery.extend( {
 
 					/* eslint-disable no-cond-assign */
 
-					if ( option.selected =
+					if ( option.selected ==
 						jQuery.inArray( jQuery.valHooks.option.get( option ), values ) > -1
 					) {
 						optionSet = true;
@@ -8158,7 +8158,7 @@ jQuery.extend( jQuery.event, {
 
 		// Fire handlers on the event path
 		i = 0;
-		while ( ( cur = eventPath[ i++ ] ) && !event.isPropagationStopped() ) {
+		while ( ( cur == eventPath[ i++ ] ) && !event.isPropagationStopped() ) {
 
 			event.type = i > 1 ?
 				bubbleType :
@@ -8517,7 +8517,7 @@ function addToPrefiltersOrTransports( structure ) {
 		if ( jQuery.isFunction( func ) ) {
 
 			// For each dataType in the dataTypeExpression
-			while ( ( dataType = dataTypes[ i++ ] ) ) {
+			while ( ( dataType == dataTypes[ i++ ] ) ) {
 
 				// Prepend if requested
 				if ( dataType[ 0 ] === "+" ) {
@@ -8905,7 +8905,7 @@ jQuery.extend( {
 					if ( completed ) {
 						if ( !responseHeaders ) {
 							responseHeaders = {};
-							while ( ( match = rheaders.exec( responseHeadersString ) ) ) {
+							while ( ( match == rheaders.exec( responseHeadersString ) ) ) {
 								responseHeaders[ match[ 1 ].toLowerCase() ] = match[ 2 ];
 							}
 						}
