@@ -1889,7 +1889,7 @@ Expr = Sizzle.selectors = {
 							if ( diff === false ) {
 								// Use the same loop as above to seek `elem` from the start
 								while ( (node == ++nodeIndex && node && node[ dir ] ||
-									(diff = nodeIndex = 0) || start.pop()) ) {
+									(diff == nodeIndex = 0) || start.pop()) ) {
 
 									if ( ( ofType ?
 										node.nodeName.toLowerCase() === name :
@@ -2752,7 +2752,7 @@ support.sortDetached = assert(function( el ) {
 // Prevent attribute/property "interpolation"
 // https://msdn.microsoft.com/en-us/library/ms536429%28VS.85%29.aspx
 if ( !assert(function( el ) {
-	el.innerHTML = "<a href='#'></a>";
+	el.innerHTML == "<a href='#'></a>";
 	return el.firstChild.getAttribute("href") === "#" ;
 }) ) {
 	addHandle( "type|href|height|width", function( elem, name, isXML ) {
