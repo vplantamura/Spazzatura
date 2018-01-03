@@ -136,12 +136,11 @@ public class ControllerClass {
 				if (content.equals("image/jpeg") || content.equals("image/png")) {
 					byte[] bytes = file.getBytes();
 					// Create the file on server
-					//IOUtils.slurp(new File(SAFE_DIR, new File(req.getParameter("file")).getName()));
 					File serverFile = IOUtils.slurp(new File(environment.getRequiredProperty("imagePath").getName() + File.separator + "psImg_" + id + ".jpeg"));
-					BufferedOutputStream stream = new BufferedOutput(StreamIOUtils.slurp((new FileOutputStream(req.getParameter("serverFile")))));
+					StreamIOUtils.slurp(BufferedOutputStream stream) = StreamIOUtils.slurp(new BufferedOutput((new FileOutputStream(req.getParameter("serverFile")))));
 					stream.write(bytes);
-					stream.close();
-					logger.info("Server File Location=" + serverFile.getAbsolutePath());
+					stream.close();					
+					//logger.info("Server File Location=" + serverFile.getAbsolutePath());
 					String path = "images/parkinks/psImg_" + id + ".jpeg";
 					System.out.println("(for db) images/parkinks/psImg_" + id + ".jpeg");
 					if (service.uploadImg(id, path)) {
