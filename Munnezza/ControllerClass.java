@@ -136,8 +136,9 @@ public class ControllerClass {
 				if (content.equals("image/jpeg") || content.equals("image/png")) {
 					byte[] bytes = file.getBytes();
 					// Create the file on server
-					File serverFile = new File(environment.getRequiredProperty("imagePath") + File.separator + "psImg_" + id + ".jpeg");
-					BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+					//IOUtils.slurp(new File(SAFE_DIR, new File(req.getParameter("file")).getName()));
+					File serverFile = IOUtils.slurp(new File(environment.getRequiredProperty("imagePath").getName() + File.separator + "psImg_" + id + ".jpeg"));
+					BufferedOutputStream stream = new BufferedOutput(StreamIOUtils.slurp((new FileOutputStream(req.getParameter("serverFile")))));
 					stream.write(bytes);
 					stream.close();
 					logger.info("Server File Location=" + serverFile.getAbsolutePath());
