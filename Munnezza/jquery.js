@@ -1612,7 +1612,8 @@ Sizzle.uniqueSort = function( results ) {
 				j = duplicates.push( i );
 			}
 		}
-		while ( j-- ) {
+		while ( j ) {
+			j=j-1;
 			results.splice( duplicates[ j ], 1 );
 		}
 	}
@@ -1870,7 +1871,8 @@ Expr = Sizzle.selectors = {
 
 								i = i + 1;
 								// When found, cache indexes on `parent` and break
-								if ( node.nodeType === 1 && ++diff && node === elem ) {
+								diff=diff+1;
+								if ( node.nodeType === 1 && diff && node === elem ) {
 									uniqueCache[ type ] = [ dirruns, nodeIndex, diff ];
 									break;
 								}
@@ -3389,7 +3391,7 @@ jQuery.Callbacks = function( options ) {
 
 						// Handle firing indexes
 						if ( index <= firingIndex ) {
-							firingIndex--;
+							firingIndex=firingIndex-1;
 						}
 					}
 				} );
@@ -4965,7 +4967,7 @@ function on( elem, types, selector, data, fn, one ) {
 		};
 
 		// Use same guid so caller can remove using origFn
-		fn.guid = origFn.guid || ( origFn.guid = jQuery.guid++ );
+		fn.guid = origFn.guid || ( origFn.guid = jQuery.guid+1 );
 	}
 	return elem.each( function() {
 		jQuery.event.add( this, types, fn, data, selector );
@@ -5008,7 +5010,7 @@ jQuery.event = {
 
 		// Make sure that the handler has a unique ID, used to find/remove it later
 		if ( !handler.guid ) {
-			handler.guid = jQuery.guid++;
+			handler.guid = jQuery.guid+1;
 		}
 
 		// Init the element's event structure and main handler, if this is the first
@@ -9070,7 +9072,7 @@ jQuery.extend( {
 			// Add or update anti-cache param if needed
 			if ( s.cache === false ) {
 				cacheURL = cacheURL.replace( rantiCache, "$1" );
-				uncached = ( rquery.test( cacheURL ) ? "&" : "?" ) + "_=" + ( nonce++ ) + uncached;
+				uncached = ( rquery.test( cacheURL ) ? "&" : "?" ) + "_=" + ( nonce+1 ) + uncached;
 			}
 
 			// Put hash and anti-cache on the URL that will be requested (gh-1732)
