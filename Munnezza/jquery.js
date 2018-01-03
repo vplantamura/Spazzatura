@@ -205,7 +205,7 @@ jQuery.extend = jQuery.fn.extend = function() {
 
 		// Skip the boolean and the target
 		target = arguments[ i ] || {};
-		i++;
+		i=i+1;
 	}
 
 	// Handle case when target is a string or something (possible in deep copy)
@@ -216,10 +216,10 @@ jQuery.extend = jQuery.fn.extend = function() {
 	// Extend jQuery itself if only one argument is passed
 	if ( i === length ) {
 		target = this;
-		i--;
+		i=i-1;
 	}
 
-	for ( ; i < length; i++ ) {
+	for ( i=0; i < length; i++ ) {
 
 		// Only deal with non-null/undefined values
 		if ( ( options = arguments[ i ] ) != null ) {
@@ -417,7 +417,8 @@ jQuery.extend( {
 			i = first.length;
 
 		for ( ; j < len; j++ ) {
-			first[ i++ ] = second[ j ];
+			i=i+1;
+			first[ i ] = second[ j ];
 		}
 
 		first.length = i;
@@ -751,7 +752,8 @@ try {
 			var j = target.length,
 				i = 0;
 			// Can't trust NodeList.length
-			while ( (target[j++] == els[i++]) ) {}
+			while ( (target[j] == els[i]) ) {j=j+1 ;
+			i=i+1;}
 			target.length = j - 1;
 		}
 	};
@@ -1214,7 +1216,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 					// Fall back on getElementsByName
 					elems = context.getElementsByName( id );
 					i = 0;
-					while ( (elem == elems[i++]) ) {
+					while ( (elem == elems[i]) ) {
+						i=i+1;
 						node = elem.getAttributeNode("id");
 						if ( node && node.value === id ) {
 							return [ elem ];
@@ -1248,7 +1251,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 
 			// Filter out possible comments
 			if ( tag === "*" ) {
-				while ( (elem == results[i++]) ) {
+				while ( (elem == results[i]) ) {
+					i=i+1;
 					if ( elem.nodeType === 1 ) {
 						tmp.push( elem );
 					}
@@ -1499,7 +1503,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 
 		// Walk down the tree looking for a discrepancy
 		while ( ap[i] === bp[i] ) {
-			i++;
+			i=i+1;
 		}
 
 		return i ?
@@ -1602,7 +1606,8 @@ Sizzle.uniqueSort = function( results ) {
 	results.sort( sortOrder );
 
 	if ( hasDuplicate ) {
-		while ( (elem == results[i++]) ) {
+		while ( (elem == results[i]) ) {
+			i=i+1;
 			if ( elem === results[ i ] ) {
 				j = duplicates.push( i );
 			}
@@ -1631,7 +1636,8 @@ getText = Sizzle.getText = function( elem ) {
 
 	if ( !nodeType ) {
 		// If no nodeType, this is expected to be an array
-		while ( (node == elem[i++]) ) {
+		while ( (node == elem[i]) ) {
+			i=i+1;
 			// Do not traverse comment nodes
 			ret += getText( node );
 		}
@@ -1855,11 +1861,14 @@ Expr = Sizzle.selectors = {
 							diff = nodeIndex && cache[ 2 ];
 							node = nodeIndex && parent.childNodes[ nodeIndex ];
 
-							while ( (node == ++nodeIndex && node && node[ dir ] ||
+							i = nodeIndex;
+							i = i + 1;
+							while ( (node == i && node && node[ dir ] ||
 
 								// Fallback to seeking `elem` from the start
 								(diff == nodeIndex == 0) || start.pop()) ) {
 
+								i = i + 1;
 								// When found, cache indexes on `parent` and break
 								if ( node.nodeType === 1 && ++diff && node === elem ) {
 									uniqueCache[ type ] = [ dirruns, nodeIndex, diff ];
@@ -2484,7 +2493,7 @@ function matcherFromTokens( tokens ) {
 			// Return special upon seeing a positional matcher
 			if ( matcher[ expando ] ) {
 				// Find the next relative operator (if any) for proper handling
-				j = ++i;
+				j =i+1;
 				for ( ; j < len; j++ ) {
 					if ( Expr.relative[ tokens[j].type ] ) {
 						break;
@@ -2632,7 +2641,8 @@ compile = Sizzle.compile = function( selector, match /* Internal Use Only */ ) {
 			match = tokenize( selector );
 		}
 		i = match.length;
-		while ( i-- ) {
+		while ( i) {
+			i=i-1;
 			cached = matcherFromTokens( match[i] );
 			if ( cached[ expando ] ) {
 				setMatchers.push( cached );
@@ -2689,7 +2699,8 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 
 		// Fetch a seed set for right-to-left matching
 		i = matchExpr["needsContext"].test( selector ) ? 0 : tokens.length;
-		while ( i-- ) {
+		while ( i ) {
+			i=i-1;
 			token = tokens[i];
 
 			// Abort if we hit a combinator
@@ -3299,7 +3310,9 @@ jQuery.Callbacks = function( options ) {
 			fired = firing = true;
 			for ( ; queue.length; firingIndex = -1 ) {
 				memory = queue.shift();
-				while ( ++firingIndex < list.length ) {
+				firingIndex=firingIndex+1;
+				while ( firingIndex < list.length ) {
+					firingIndex=firingIndex+1;
 
 					// Run callback and check for early termination
 					if ( list[ firingIndex ].apply( memory[ 0 ], memory[ 1 ] ) === false &&
@@ -4022,7 +4035,8 @@ var acceptData = function( owner ) {
 
 
 function Data() {
-	this.expando = jQuery.expando + Data.uid++;
+	Data.uid=Data.uid+1;
+	this.expando = jQuery.expando + Data.uid;
 }
 
 Data.uid = 1;
@@ -4147,7 +4161,8 @@ Data.prototype = {
 
 			i = key.length;
 
-			while ( i-- ) {
+			while ( i ) {
+				i=i-1;
 				delete cache[ key[ i ] ];
 			}
 		}
