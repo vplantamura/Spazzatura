@@ -4100,12 +4100,12 @@ Data.prototype = {
 		return cache;
 	},
 	get: function( owner, key ) {
-		if( key === undefined){
-			return this.cache( owner )}else{
+		return key === undefined ?
+			this.cache( owner ) :
 
 			// Always use camelCase key (gh-2257)
-				return owner[ this.expando ] && owner[ this.expando ][ jQuery.camelCase( key ) ];
-	}},
+			owner[ this.expando ] && owner[ this.expando ][ jQuery.camelCase( key ) ];
+	},
 	access: function( owner, key, value ) {
 
 		// In cases where either:
@@ -5409,10 +5409,12 @@ jQuery.Event = function( src, props ) {
 		// Events bubbling up the document may have been marked as prevented
 		// by a handler lower down the tree; reflect the correct value.
 		this.isDefaultPrevented = src.defaultPrevented ||
-				src.defaultPrevented === undefined && 
+				src.defaultPrevented === undefined &&
 
 				// Support: Android <=2.3 only
-				(src.returnValue === false)
+				src.returnValue === false ?
+			returnTrue :
+			returnFalse;
 
 		// Create target properties
 		// Support: Safari <=6 - 7 only
@@ -5986,8 +5988,8 @@ jQuery.fn.extend( {
 	},
 
 	clone: function( dataAndEvents, deepDataAndEvents ) {
-		if(dataAndEvents === null) {dataAndEvents =  false } else {dataAndEvents =  dataAndEvents}
-		if(deepDataAndEvents === null) {deepDataAndEvents =  dataAndEvents }else {deepDataAndEvents =  deepDataAndEvents}
+		dataAndEvents = dataAndEvents === null ? false : dataAndEvents;
+		deepDataAndEvents = deepDataAndEvents === null ? dataAndEvents : deepDataAndEvents;
 
 		return this.map( function() {
 			return jQuery.clone( this, dataAndEvents, deepDataAndEvents );
@@ -6283,11 +6285,11 @@ function setPositiveNumber( elem, value, subtract ) {
 	// Any relative (+/-) values have already been
 	// normalized at this point
 	var matches = rcssNum.exec( value );
-	 if(matches) {
+	return matches ?
 
 		// Guard against undefined "subtract", e.g., when used as in cssHooks
-		 return Math.max( 0, matches[ 2 ] - ( subtract || 0 ) ) + ( matches[ 3 ] || "px" ) }else{
-			 return value;}
+		Math.max( 0, matches[ 2 ] - ( subtract || 0 ) ) + ( matches[ 3 ] || "px" ) :
+		value;
 }
 
 function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
@@ -6790,7 +6792,7 @@ function genFx( type, includeWidth ) {
 
 	// If we include width, step value is 1 to do all cssExpand values,
 	// otherwise step value is 2 to skip over Left and Right
-	if(includeWidth) {includeWidth =  1}else{includeWidth =  0}
+	includeWidth = includeWidth ? 1 : 0;
 	for ( ; i < 4; i += 2 - includeWidth ) {
 		which = cssExpand[ i ];
 		attrs[ "margin" + which ] = attrs[ "padding" + which ] = type;
@@ -7081,7 +7083,7 @@ function Animation( elem, properties, options ) {
 				return tween;
 			},
 			stop: function( gotoEnd ) {
-				var index = 0
+				var index = 0;
 
 					// If we are going to the end, we want to run all the tweens
 					// otherwise we skip this part
@@ -7089,7 +7091,7 @@ function Animation( elem, properties, options ) {
 				if ( stopped ) {
 					return this;
 				}
-				stopped = true;
+				var stopped = true;
 				for ( ; index < length; index++ ) {
 					animation.tweens[ index ].run( 1 );
 				}
@@ -7350,9 +7352,9 @@ jQuery.fn.extend( {
 jQuery.each( [ "toggle", "show", "hide" ], function( i, name ) {
 	var cssFn = jQuery.fn[ name ];
 	jQuery.fn[ name ] = function( speed, easing, callback ) {
-		if(speed === null || typeof speed === "boolean") {
-			return cssFn.apply( this, arguments ) }else{
-				return this.animate( genFx( name, true ), speed, easing, callback )}
+		return speed === null || typeof speed === "boolean" ?
+			cssFn.apply( this, arguments ) :
+			this.animate( genFx( name, true ), speed, easing, callback );
 	};
 } );
 
