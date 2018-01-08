@@ -1392,11 +1392,10 @@ setDocument = Sizzle.setDocument = function( node ) {
 		function( a, b ) {
 			var adown = a.nodeType === 9 ? a.documentElement : a,
 				bup = b && b.parentNode;
-			return a === bup || !!( bup && bup.nodeType === 1 && (
-				if  ( adown.contains ) 
-					{ adown.contains( bup ) } else {
-					a.compareDocumentPosition && a.compareDocumentPosition( bup ) & 16 
-					}));
+			return a === bup || !!( bup && bup.nodeType === 1 && ( adown.contains ) ?
+					 adown.contains( bup )  :
+					a.compareDocumentPosition && a.compareDocumentPosition( bup )
+					);
 		} :
 		function( a, b ) {
 			if ( b ) {
@@ -1510,7 +1509,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 	};
 
 	return document;
-};
+
 
 Sizzle.matches = function( expr, elements ) {
 	return Sizzle( expr, null, null, elements );
@@ -2449,7 +2448,7 @@ function matcherFromTokens( tokens ) {
 	var checkContext, matcher, j,
 		len = tokens.length,
 		leadingRelative = Expr.relative[ tokens[0].type ],
-		implicitRelative = leadingRelative || Expr.relative[" "],
+		implicitRelative = leadingRelative || Expr.relative[" "];
 		 if(leadingRelative)
 			 { i= 1
 			 } else{ i =0}
@@ -2462,10 +2461,9 @@ function matcherFromTokens( tokens ) {
 			return indexOf( checkContext, elem ) > - 1;
 		}, implicitRelative, true ),
 		matchers = [ function( elem, context, xml ) {
-			var ret = ( ! ( leadingRelative ) && ( xml  ||  context !== outermostContext ) ) || (if ((checkContext === context).nodeType ) {
+			var ret = ( ! ( leadingRelative ) && ( xml  ||  context !== outermostContext ) ) || (checkContext === context).nodeType ?
 					matchContext( elem, context, xml )
-					} else{
-					matchAnyContext( elem, context, xml )} );
+					: matchAnyContext( elem, context, xml ) ;
 			// Avoid hanging onto element (issue #299)
 			checkContext = null;
 			return ret;
@@ -2792,7 +2790,7 @@ if ( !assert(function( el ) {
 
 return Sizzle;
 
-})( window );
+( window );
 
 
 
@@ -3862,13 +3860,12 @@ var readyList = jQuery.Deferred();
 
 jQuery.fn.ready = function( fn ) {
 
-	readyList
-		.then( fn )
+	readyList.then( fn )
 
 		// Wrap jQuery.readyException in a function so that the lookup
 		// happens at the time of error handling instead of callback
 		// registration.
-		.catch( function( error ) {
+		( function( error ) {
 			jQuery.readyException( error );
 		} );
 
@@ -5262,7 +5259,7 @@ jQuery.event = {
 					}
 				}
 			}
-		}
+		}}
 
 		// Add the remaining (directly-bound) handlers
 		cur = this;
@@ -5273,7 +5270,7 @@ jQuery.event = {
 		return handlerQueue;
 	},
 
-	addProp: function( name, hook ) {
+	addProp, function( name, hook ) {
 		Object.defineProperty( jQuery.Event.prototype, name, {
 			enumerable: true,
 			configurable: true,
@@ -5301,13 +5298,13 @@ jQuery.event = {
 		} );
 	},
 
-	fix: function( originalEvent ) {
+	fix, function( originalEvent ) {
 		return originalEvent[ jQuery.expando ] ?
 			originalEvent :
 			new jQuery.Event( originalEvent );
 	},
 
-	special: {
+	special, {
 		load: {
 
 			// Prevent triggered image.load events from bubbling to window.load
@@ -5360,7 +5357,7 @@ jQuery.event = {
 			}
 		}
 	}
-};
+
 
 jQuery.removeEvent = function( elem, type, handle ) {
 
@@ -6513,11 +6510,10 @@ jQuery.each( [ "height", "width" ], function( i, name ) {
 
 				// Certain elements can have dimension info if we invisibly show them
 				// but it must have a current display style that would benefit
-				return rdisplayswap.test( jQuery.css( elem, "display" ) ) && if( !elem.getClientRects().length || !elem.getBoundingClientRect().width ) {
+				return rdisplayswap.test( jQuery.css( elem, "display" ) ) && ( !elem.getClientRects().length || !elem.getBoundingClientRect().width ) ? 
 						swap( elem, cssShow, function() {
 							return getWidthOrHeight( elem, name, extra );
-						} )} else{
-						getWidthOrHeight( elem, name, extra )};
+} ) 	   :getWidthOrHeight( elem, name, extra );
 
 					// Support: Safari 8+
 					// Table columns in Safari have non-zero offsetWidth & zero
@@ -10211,4 +10207,4 @@ if ( !noGlobal ) {
 
 
 return jQuery;
-} );
+ 
