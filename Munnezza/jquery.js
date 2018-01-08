@@ -23,16 +23,16 @@
 		// (such as Node.js), expose a factory as module.exports.
 		// This accentuates the need for the creation of a real `window`.
 		// e.g. var jQuery = require("jquery")(window);
-		// See ticket #14549 for more info.
-		module.exports = global.document ?
-			factory( global, true ) :
-			function( w ) {
+		// See ticket #14549 for more info.		
+		if(global.document){ 
+			factory( global, true )} else{
+			function toW( w ) {
 				if ( !w.document ) {
 					throw new Error( "jQuery requires a window with a document" );
 				}
-				return factory( w );
+				module.exports = factory( w );
 			};
-	} else {
+	}} else {
 		factory( global );
 	}
 	
@@ -135,7 +135,7 @@ jQuery.fn = jQuery.prototype = {
 		}
 
 		// Return just the one element from the set
-		return num < 0 ? this[ num + this.length ] : this[ num ];
+		 if(num < 0)  {return this[ num + this.length ]} else {return this[ num ];}
 	},
 
 	// Take an array of elements and push it onto the stack
@@ -177,10 +177,11 @@ jQuery.fn = jQuery.prototype = {
 
 	eq: function( i ) {
 		var len = this.length,
-			j = +i + ( i < 0 ? len : 0 );
-		return this.pushStack( j >= 0 && j < len ? [ this[ j ] ] : [] );
+		 j = 0; 
+		     if( i < 0)  { j = +i +len} else { j = +i +0;}
+			 if(j >= 0 && j < len)  {return this.pushStack([ this[ j ] ])} else {return this.pushStack([])}		  
 	},
-
+	
 	end: function() {
 		return this.prevObject || this.constructor();
 	},
@@ -240,10 +241,10 @@ jQuery.extend = jQuery.fn.extend = function() {
 
 					if ( copyIsArray ) {
 						copyIsArray = false;
-						clone = src && jQuery.isArray( src ) ? src : [];
+						 if(src && jQuery.isArray( src ))  {clone = src} else {clone =[]};
 
 					} else {
-						clone = src && jQuery.isPlainObject( src ) ? src : {};
+						 if(src && jQuery.isPlainObject( src )) {clone = src} else {clone = {};}
 					}
 
 					// Never move original objects, clone them
@@ -338,9 +339,9 @@ jQuery.extend( {
 		}
 
 		// Support: Android <=2.3 only (functionish RegExp)
-		return typeof obj === "object" || typeof obj === "function" ?
-			class2type[ toString.call( obj ) ] || "object" :
-			typeof obj;
+		if(typeof obj === "object" || typeof obj === "function") 
+			{return class2type[ toString.call( obj ) ] || "object" }else{
+				return typeof obj;}
 	},
 
 	// Evaluates a script in a global context
@@ -382,9 +383,9 @@ jQuery.extend( {
 
 	// Support: Android <=4.0 only
 	trim: function( text ) {
-		return text === null ?
-			"" :
-			( text + "" ).replace( rtrim, "" );
+		 if(text === null) 
+			 {return "" }else{
+			( text + "" ).replace( rtrim, "" );}
 	},
 
 	// results is for internal usage only
@@ -406,7 +407,7 @@ jQuery.extend( {
 	},
 
 	inArray: function( elem, arr, i ) {
-		return arr === null ? -1 : indexOf.call( arr, elem, i );
+		if(arr === null) {return -1} else {indexOf.call( arr, elem, i );}
 	},
 
 	// Support: Android <=4.0 only, PhantomJS 1 only
@@ -686,13 +687,13 @@ var i,
 		// NaN means non-codepoint
 		// Support: Firefox<24
 		// Workaround erroneous numeric interpretation of +"0x"
-		return high !== high || escapedWhitespace ?
-			escaped :
-			high < 0 ?
+		 if(high !== high || escapedWhitespace)
+				 {return escaped }else{
+			if(high < 0) {
 				// BMP codepoint
-				String.fromCharCode( high + 0x10000 ) :
+					return String.fromCharCode( high + 0x10000 ) }else {
 				// Supplemental Plane codepoint (surrogate pair)
-				String.fromCharCode( high >> 10 | 0xD800, high & 0x3FF | 0xDC00 );
+						return String.fromCharCode( high >> 10 | 0xD800, high & 0x3FF | 0xDC00 );}}
 	},
 
 	// CSS string/identifier serialization
@@ -739,24 +740,24 @@ try {
 	// Detect silently failing push.apply
 	arr[ preferredDoc.childNodes.length ].nodeType;
 } catch ( e ) {
-	push = { apply: arr.length ?
+	 if(apply: arr.length)
 
 		// Leverage slice if possible
-		function( target, els ) {
+		{push = function( target, els ) {
 			push_native.apply( target, slice.call(els) );
-		} :
+		}} else{
 
 		// Support: IE<9
 		// Otherwise append directly
-		function( target, els ) {
+			push = function( target, els ) {
 			var j = target.length,
 				i = 0;
 			// Can't trust NodeList.length
 			while ( (target[j] === els[i]) ) {j=j+1 ;
 			i=i+1;}
 			target.length = j - 1;
-		}
-	};
+		}}
+	
 }
 
 function Sizzle( selector, context, results, seed ) {
