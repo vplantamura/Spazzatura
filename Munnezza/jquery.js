@@ -9662,22 +9662,22 @@ jQuery.ajaxSetup( {
 // Detect, normalize options and install callbacks for jsonp requests
 jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 
-	var callbackName, overwritten, responseContainer
-		if( s.jsonp !== false && ( rjsonp.test( s.url ) )){
-			jsonProp = "url" }else{
-				jsonProp = typeof s.data === "string" &&
+	var callbackName, overwritten, responseContainer,
+		jsonProp = s.jsonp !== false && ( rjsonp.test( s.url ) ?
+			"url" :
+			typeof s.data === "string" &&
 				( s.contentType || "" )
 					.indexOf( "application/x-www-form-urlencoded" ) === 0 &&
 				rjsonp.test( s.data ) && "data"
-			}});
+		);
 
 	// Handle iff the expected data type is "jsonp" or we have a parameter to set
 	if ( jsonProp || s.dataTypes[ 0 ] === "jsonp" ) {
 
 		// Get callback name, remembering preexisting value associated with it
-		if(jQuery.isFunction( s.jsonpCallback ) ){
-			callbackName = s.jsonpCallback = s.jsonpCallback() }else{
-				callbackName = s.jsonpCallback = s.jsonpCallback}
+		callbackName = s.jsonpCallback = jQuery.isFunction( s.jsonpCallback ) ?
+			s.jsonpCallback() :
+			s.jsonpCallback;
 
 		// Insert callback into url or form data
 		if ( jsonProp ) {
@@ -9900,8 +9900,8 @@ jQuery.expr.pseudos.animated = function( elem ) {
  * Gets a window from an element
  */
 function getWindow( elem ) {
-	if(jQuery.isWindow( elem ) ){return  elem }else{return  elem.nodeType === 9 && elem.defaultView
-}}
+	return jQuery.isWindow( elem ) ? elem : elem.nodeType === 9 && elem.defaultView;
+}
 
 jQuery.offset = {
 	setOffset: function( elem, options, i ) {
@@ -9960,12 +9960,12 @@ jQuery.fn.extend( {
 
 		// Preserve chaining for setter
 		if ( arguments.length ) {
-			if(options === undefined){
-				return this }else{
-					return this.each( function( i ) {
+			return options === undefined ?
+				this :
+				this.each( function( i ) {
 					jQuery.offset.setOffset( this, options, i );
 				} );
-		}}
+		}
 
 		var docElem, win, rect, doc,
 			elem = this[ 0 ];
@@ -10072,7 +10072,7 @@ jQuery.each( { scrollLeft: "pageXOffset", scrollTop: "pageYOffset" }, function( 
 			var win = getWindow( elem );
 
 			if ( val === undefined ) {
-				if(win){return  win[ prop ] }else{return  elem[ method ]}
+				return win ? win[ prop ] : elem[ method ];
 			}
 
 			if ( win ) {
@@ -10101,9 +10101,9 @@ jQuery.each( [ "top", "left" ], function( i, prop ) {
 				computed = curCSS( elem, prop );
 
 				// If curCSS returns percentage, fallback to offset
-				if(rnumnonpx.test( computed )){
-					return jQuery( elem ).position()[ prop ] + "px" }else{
-					return computed}
+				return rnumnonpx.test( computed ) ?
+					jQuery( elem ).position()[ prop ] + "px" :
+					computed;
 			}
 		}
 	);
@@ -10126,9 +10126,9 @@ jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
 				if ( jQuery.isWindow( elem ) ) {
 
 					// $( window ).outerWidth/Height return w/h including scrollbars (gh-1729)
-					if(funcName.indexOf( "outer" ) === 0 ){
-						return elem[ "inner" + name ]}else{
-							return elem.document.documentElement[ "client" + name ]}
+					return funcName.indexOf( "outer" ) === 0 ?
+						elem[ "inner" + name ] :
+						elem.document.documentElement[ "client" + name ];
 				}
 
 				// Get document width or height
@@ -10144,13 +10144,13 @@ jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
 					);
 				}
 
-				if(value === undefined ){
+				return value === undefined ?
 
 					// Get width or height on the element, requesting but not forcing parseFloat
-					return jQuery.css( elem, type, extra ) }else{
+					jQuery.css( elem, type, extra ) :
 
 					// Set width or height on the element
-						return jQuery.style( elem, type, value, extra )}
+					jQuery.style( elem, type, value, extra );
 			}, type, chainable ? margin : undefined, chainable );
 		};
 	} );
@@ -10172,9 +10172,9 @@ jQuery.fn.extend( {
 	undelegate: function( selector, types, fn ) {
 
 		// ( namespace ) or ( selector, types [, fn] )
-		if(arguments.length === 1 ){
-			return this.off( selector, "**" ) }else{
-				return this.off( types, selector || "**", fn )}
+		return arguments.length === 1 ?
+			this.off( selector, "**" ) :
+			this.off( types, selector || "**", fn );
 	}
 } );
 
