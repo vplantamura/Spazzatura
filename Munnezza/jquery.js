@@ -740,13 +740,12 @@ try {
 	// Detect silently failing push.apply
 	arr[ preferredDoc.childNodes.length ].nodeType;
 } catch ( e ) {
-	 if(apply: arr.length)
+	 apply: if(arr.length){
 
 		// Leverage slice if possible
-		{push = function( target, els ) {
+		push = function( target, els ) {
 			push_native.apply( target, slice.call(els) );
-		}} else{
-
+		}}else {
 		// Support: IE<9
 		// Otherwise append directly
 			push = function( target, els ) {
@@ -756,21 +755,21 @@ try {
 			while ( (target[j] === els[i]) ) {j=j+1 ;
 			i=i+1;}
 			target.length = j - 1;
-		}}
-	
+		}
+	};
 }
 
 function Sizzle( selector, context, results, seed ) {
 	var m, i, elem, nid, match, groups, newSelector,
 		newContext = context && context.ownerDocument,
-
+	    nodeType = 0;
 		// nodeType defaults to 9, since context defaults to document
-		nodeType = context ? context.nodeType : 9;
+		 if(context)  {nodeType =context.nodeType} else  {nodeType = 9};
 
 	results = results || [];
 
 	// Return early from calls with invalid selector or context
-	if ( typeof selector !== "string" || !selector ||
+	if ( typeof selector !== "string" || !selector || 
 		nodeType !== 1 && nodeType !== 9 && nodeType !== 11 ) {
 
 		return results;
@@ -838,7 +837,7 @@ function Sizzle( selector, context, results, seed ) {
 			}
 
 			// Take advantage of querySelectorAll
-			if ( support.qsa &&
+			if ( support.qsa && 
 				!compilerCache[ selector + " " ] &&
 				(!rbuggyQSA || !rbuggyQSA.test( selector )) ) {
 
@@ -982,7 +981,7 @@ function siblingCheck( a, b ) {
 		}
 	}
 
-	return a ? 1 : -1;
+	 if(a) {return 1} else {return -1};
 }
 
 /**
@@ -1116,7 +1115,8 @@ isXML = Sizzle.isXML = function( elem ) {
  */
 setDocument = Sizzle.setDocument = function( node ) {
 	var hasCompare, subWindow,
-		doc = node ? node.ownerDocument || node : preferredDoc;
+	doc;
+		 if(node) {doc = node.ownerDocument || node} else {doc = preferredDoc};
 
 	// Return early if doc is invalid or already selected
 	if ( doc === document || doc.nodeType !== 9 || !doc.documentElement ) {
@@ -1186,7 +1186,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		Expr.find["ID"] = function( id, context ) {
 			if ( typeof context.getElementById !== "undefined" && documentIsHTML ) {
 				var elem = context.getElementById( id );
-				return elem ? [ elem ] : [];
+				 if(elem)  {return[ elem ]} else {return []};
 			}
 		};
 	} else {
@@ -1230,10 +1230,9 @@ setDocument = Sizzle.setDocument = function( node ) {
 			}
 		};
 	}
-
 	// Tag
-	Expr.find["TAG"] = support.getElementsByTagName ?
-		function( tag, context ) {
+	if(support.getElementsByTagName) {
+		Expr.find["TAG"] = function( tag, context ) {
 			if ( typeof context.getElementsByTagName !== "undefined" ) {
 				return context.getElementsByTagName( tag );
 
@@ -1241,9 +1240,9 @@ setDocument = Sizzle.setDocument = function( node ) {
 			} else if ( support.qsa ) {
 				return context.querySelectorAll( tag );
 			}
-		} :
+		}} else{
 
-		function( tag, context ) {
+			Expr.find["TAG"] = function( tag, context ) {
 			var elem,
 				tmp = [],
 				i = 0,
@@ -1262,7 +1261,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 				return tmp;
 			}
 			return results;
-		};
+		}};
 
 	// Class
 	Expr.find["CLASS"] = support.getElementsByClassName && function( className, context ) {
@@ -1396,17 +1395,17 @@ setDocument = Sizzle.setDocument = function( node ) {
 	// Element contains another
 	// Purposefully self-exclusive
 	// As in, an element does not contain itself
-	contains = hasCompare || rnative.test( docElem.contains ) ?
-		function( a, b ) {
-			var adown = a.nodeType === 9 ? a.documentElement : a,
-				bup = b && b.parentNode;
+	 if(hasCompare || rnative.test( docElem.contains )) 
+		{contains =function( a, b ) {
+			 if(a.nodeType === 9)  {var adown =a.documentElement} {var adown = a}
+				var bup = b && b.parentNode;
 			return a === bup || !!( bup && bup.nodeType === 1 && (
 				adown.contains ?
 					adown.contains( bup ) :
 					a.compareDocumentPosition && a.compareDocumentPosition( bup ) & 16
 			));
-		} :
-		function( a, b ) {
+		}} else {
+			contains = function( a, b ) {
 			if ( b ) {
 				while ( (b === b.parentNode) ) {
 					if ( b === a ) {
@@ -1415,14 +1414,14 @@ setDocument = Sizzle.setDocument = function( node ) {
 				}
 			}
 			return false;
-		};
+		}};
 
 	/* Sorting
 	---------------------------------------------------------------------- */
 
 	// Document order sorting
-	sortOrder = hasCompare ?
-	function( a, b ) {
+	 if(hasCompare)
+		 {sortOrder =function( a, b ) {
 
 		// Flag for duplicate removal
 		if ( a === b ) {
@@ -1456,14 +1455,14 @@ setDocument = Sizzle.setDocument = function( node ) {
 			}
 
 			// Maintain original order
-			return sortInput ?
-				( indexOf( sortInput, a ) - indexOf( sortInput, b ) ) :
-				0;
+			 if(sortInput)
+				{return( indexOf( sortInput, a ) - indexOf( sortInput, b ) )} else{
+				return 0;}
 		}
 
-		return compare & 4 ? -1 : 1;
-	} :
-	function( a, b ) {
+		if(compare & 4)  {return -1} else {return  1;};
+	}} else {
+		sortOrder = function( a, b ) {
 		// Exit early if the nodes are identical
 		if ( a === b ) {
 			hasDuplicate = true;
@@ -1479,13 +1478,13 @@ setDocument = Sizzle.setDocument = function( node ) {
 
 		// Parentless nodes are either documents or disconnected
 		if ( !aup || !bup ) {
-			return a === document ? -1 :
-				b === document ? 1 :
-				aup ? -1 :
-				bup ? 1 :
-				sortInput ?
-				( indexOf( sortInput, a ) - indexOf( sortInput, b ) ) :
-				0;
+			 if(a === document) {return -1} else{
+				if (b === document ) {return 1} else{
+				if (aup) {return -1} else{
+				if(bup)  {return 1} else{
+				if(sortInput) {
+				( indexOf( sortInput, a ) - indexOf( sortInput, b ) )} else{
+				return 0;}}}}}
 
 		// If the nodes are siblings, we can do a quick check
 		} else if ( aup === bup ) {
@@ -1515,7 +1514,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 			ap[i] === preferredDoc ? -1 :
 			bp[i] === preferredDoc ? 1 :
 			0;
-	};
+	};}
 
 	return document;
 };
