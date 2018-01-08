@@ -11,6 +11,7 @@
  *
  * Date: 2016-09-22T22:30Z
  */
+//revision 9999
 ( function( global, factory ) {
 
 	"use strict";
@@ -1990,8 +1991,7 @@ Expr = Sizzle.selectors = {
 						i = seed.length;
 
 					// Match elements unmatched by `matcher`
-					while ( i > 0) {
-						i = i - 1;
+					while ( i-- ) {
 						if ( (elem === unmatched[i]) ) {
 							seed[i] = !(matches[i] = elem);
 						}
@@ -2331,8 +2331,7 @@ function elementMatcher( matchers ) {
 	 if(matchers.length > 1) {
 		 return function( elem, context, xml ) {
 			var i = matchers.length;
-			while ( i > 0 ) {
-				i = i - 1;
+			while ( i-- ) {
 				if ( !matchers[i]( elem, context, xml ) ) {
 					return false;
 				}
@@ -2387,22 +2386,22 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 
 			// Get initial elements from seed or context
 			elems = seed || multipleContexts( selector || "*", context.nodeType ? [ context ] : context, [] ),
-			matcherIn 
-			// Prefilter to get matcher input, preserving a map for seed-results synchronization
-			 if (preFilter && ( seed || !selector )) {
-				 matcherIn = condense( elems, preMap, preFilter, context, xml )} else{
-					 matcherIn = elems}
 
-			if(matcherOut = matcher){
+			// Prefilter to get matcher input, preserving a map for seed-results synchronization
+			matcherIn = preFilter && ( seed || !selector ) ?
+				condense( elems, preMap, preFilter, context, xml ) :
+				elems,
+
+			matcherOut = matcher ?
 				// If we have a postFinder, or filtered seed, or non-seed postFilter or preexisting results,
-				if(postFinder || ( seed ? preFilter : preexisting || postFilter )) {
+				postFinder || ( seed ? preFilter : preexisting || postFilter ) ?
 
 					// ...intermediate processing is necessary
-					return [] }else{
+					[] :
 
 					// ...otherwise use results directly
-					return results;}} else{
-				return matcherIn;}
+					results :
+				matcherIn;
 
 		// Find primary matches
 		if ( matcher ) {
@@ -2534,7 +2533,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 				setMatched = [],
 				contextBackup = outermostContext,
 				// We must always have either seed elements or outermost context
-				elems = seed || byElement && Expr.find["TAG"]( "*", outermost );
+				elems = seed || byElement && Expr.find["TAG"]( "*", outermost )
 				// Use integer dirruns iff this is the outermost matcher
 				if(dirruns += contextBackup === null ){dirrunsUnique =  1} else {dirrunsUnique =  Math.random() || 0.1}
 				len = elems.length;
@@ -2553,11 +2552,11 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 						setDocument( elem );
 						xml = !documentIsHTML;
 					}
-					while ( (matcher === elementMatchers[j]) ) {
+					while ( (matcher === elementMatchers[j++]) ) {
 						if ( matcher( elem, context || document, xml) ) {
 							results.push( elem );
 							break;
-						} j = j + 1;
+						}
 					}
 					if ( outermost ) {
 						dirruns = dirrunsUnique;
@@ -2773,7 +2772,7 @@ if ( !assert(function( el ) {
 }) ) {
 	addHandle( "type|href|height|width", function( elem, name, isXML ) {
 		if ( !isXML ) {
-			if( elem.getAttribute( name, name.toLowerCase() === "type")) {return 1 } else {return 2 }
+			return elem.getAttribute( name, name.toLowerCase() === "type" ? 1 : 2 );
 		}
 	});
 }
@@ -3002,7 +3001,7 @@ var rootjQuery,
 
 				// HANDLE: $(html) -> $(array)
 				if ( match[ 1 ] ) {
-					if(context instanceof jQuery){context =  context[ 0 ]}else{context =  context}
+					context = context instanceof jQuery ? context[ 0 ] : context;
 
 					// Option to run scripts is true for back-compat
 					// Intentionally let the error be thrown if parseHTML is not present
@@ -3120,7 +3119,7 @@ jQuery.fn.extend( {
 						targets.index( cur ) > -1 :
 
 						// Don't pass non-elements to Sizzle
-						cur.nodeType === 1 && 
+						cur.nodeType === 1 &&
 							jQuery.find.matchesSelector( cur, selectors ) ) ) {
 
 						matched.push( cur );
@@ -3404,9 +3403,9 @@ jQuery.Callbacks = function( options ) {
 			// Check if a given callback is in the list.
 			// If no argument is given, return whether or not list has callbacks attached.
 			has: function( fn ) {
-				if(fn) {
-					return  jQuery.inArray( fn, list ) > -1} else{
-						return  list.length > 0;}
+				return fn ?
+					jQuery.inArray( fn, list ) > -1 :
+					list.length > 0;
 			},
 
 			// Remove all callbacks from the list
@@ -3447,7 +3446,7 @@ jQuery.Callbacks = function( options ) {
 			fireWith: function( context, args ) {
 				if ( !locked ) {
 					args = args || [];
-					if( context, args.slice) {args = args.slice()} else{args = args }
+					args = [ context, args.slice ? args.slice() : args ];
 					queue.push( args );
 					if ( !firing ) {
 						fire();
@@ -3650,8 +3649,8 @@ jQuery.extend( {
 
 								// Only normal processors (resolve) catch and reject exceptions
 								 if(special){ 
-									return mightThrow} else{
-									return function() {
+									 process = mightThrow} else{
+										 process = function() {
 										try {
 											mightThrow();
 										} catch ( e ) {
@@ -4136,7 +4135,7 @@ Data.prototype = {
 
 		// Since the "set" path can have two possible entry points
 		// return the expected data based on which path was taken[*]
-		 if(value !== undefined) {return returnvalue} else{return key;}
+		 if(value !== undefined) {return value} else{return key;}
 	},
 	remove: function( owner, key ) {
 		var i,
@@ -4161,7 +4160,7 @@ Data.prototype = {
 				// Otherwise, create an array by matching non-whitespace
 				if( key in cache){
 					key = [ key ]}else{
-					( key.match( rnothtmlwhite ) || [] );
+					key = ( key.match( rnothtmlwhite ) || [] );
 			}}
 
 			i = key.length;
@@ -8004,9 +8003,9 @@ jQuery.extend( {
 				var value, option, i,
 					options = elem.options,
 					index = elem.selectedIndex,
-					one = elem.type === "select-one";
-					if( one) {values = null; max =index + 1 } else{values = []; max = options.length}
-					 
+					one = elem.type === "select-one",
+					values = one ? null : [],
+					max = one ? index + 1 : options.length;
 
 				if ( index < 0 ) {
 					i = max;
@@ -8180,9 +8179,9 @@ jQuery.extend( jQuery.event, {
 		i = 0;
 		while ( ( cur === eventPath[ i++ ] ) && !event.isPropagationStopped() ) {
 
-			if(i > 1){
-				event.type = bubbleType }else {
-					event.type =  special.bindType || type}
+			event.type = i > 1 ?
+				bubbleType :
+				special.bindType || type;
 
 			// jQuery handler
 			handle = ( dataPriv.get( cur, "events" ) || {} )[ event.type ] &&
