@@ -8838,13 +8838,13 @@ jQuery.extend( {
 	// with both ajaxSettings and settings fields.
 	// If target is omitted, writes into ajaxSettings.
 	ajaxSetup: function( target, settings ) {
-		if(settings){ 
+		return settings ?
 
 			// Building a settings object
-			return ajaxExtend( ajaxExtend( target, jQuery.ajaxSettings ), settings ) }else{
+			ajaxExtend( ajaxExtend( target, jQuery.ajaxSettings ), settings ) :
 
 			// Extending ajaxSettings
-				return ajaxExtend( jQuery.ajaxSettings, target )}
+			ajaxExtend( jQuery.ajaxSettings, target );
 	},
 
 	ajaxPrefilter: addToPrefiltersOrTransports( prefilters ),
@@ -8893,13 +8893,13 @@ jQuery.extend( {
 			s = jQuery.ajaxSetup( {}, options ),
 
 			// Callbacks context
-			callbackContext = s.context || s
+			callbackContext = s.context || s,
 
 			// Context for global events is callbackContext if it is a DOM node or jQuery collection
-			if( s.context &&
-				( callbackContext.nodeType || callbackContext.jquery ) ){
-				globalEventContext = jQuery( callbackContext ) }else {
-					globalEventContext = jQuery.event}
+			globalEventContext = s.context &&
+				( callbackContext.nodeType || callbackContext.jquery ) ?
+					jQuery( callbackContext ) :
+					jQuery.event,
 
 			// Deferreds
 			deferred = jQuery.Deferred(),
@@ -8931,12 +8931,12 @@ jQuery.extend( {
 						}
 						match = responseHeaders[ key.toLowerCase() ];
 					}
-					if(match === null){return  null }else{return  match}
+					return match === null ? null : match;
 				},
 
 				// Raw string
 				getAllResponseHeaders: function() {
-					if(completed ){return  responseHeadersString }else{return  null}
+					return completed ? responseHeadersString : null;
 				},
 
 				// Caches the header
@@ -9198,7 +9198,7 @@ jQuery.extend( {
 			responseHeadersString = headers || "";
 
 			// Set readyState
-			 if(status > 0){jqXHR.readyState = 4}else{ jqXHR.readyState = 0}
+			jqXHR.readyState = status > 0 ? 4 : 0;
 
 			// Determine if successful
 			isSuccess = status >= 200 && status < 300 || status === 304;
