@@ -7406,7 +7406,7 @@ jQuery.fx.interval = 13;
 jQuery.fx.start = function() {
 	if ( !timerId ) {
 		if(window.requestAnimationFrame){
-			timerId = window.requestAnimationFrame( raf ) }rlse{
+			timerId = window.requestAnimationFrame( raf ) } else {
 				timerId = window.setInterval( jQuery.fx.tick, jQuery.fx.interval );}
 	}
 };
@@ -7433,7 +7433,7 @@ jQuery.fx.speeds = {
 // Based off of the plugin by Clint Helfers, with permission.
 // https://web.archive.org/web/20100324014747/http://blindsignals.com/index.php/2009/07/jquery-delay/
 jQuery.fn.delay = function( time, type ) {
-	if(jQuery.fx){time =  jQuery.fx.speeds[ time ] || time }else{time =  time}
+	time = jQuery.fx ? jQuery.fx.speeds[ time ] || time : time;
 	type = type || "fx";
 
 	return this.queue( type, function( next, hooks ) {
@@ -7988,14 +7988,14 @@ jQuery.extend( {
 			get: function( elem ) {
 
 				var val = jQuery.find.attr( elem, "value" );
-				if(val !== null ){
-					return val }else{
+				return val !== null ?
+					val :
 
 					// Support: IE <=10 - 11 only
 					// option.text throws exceptions (#14686, #14858)
 					// Strip and collapse whitespace
 					// https://html.spec.whatwg.org/#strip-and-collapse-whitespace
-						return stripAndCollapse( jQuery.text( elem ) )}
+					stripAndCollapse( jQuery.text( elem ) );
 			}
 		},
 		select: {
